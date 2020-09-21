@@ -19,9 +19,9 @@ export const save = async (objectToSave, validationFn = () => true, entity) =>  
     }
 }
 
-export const getAll = async (entity) => {
+export const getAll = async (query, entity) => {
     const db = await getCollection(entity)
-    return await db.find().toArray()
+    return await db.find(query).toArray()
 }
 
 export const getOne = async (key, value, entity) => {

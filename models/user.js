@@ -12,7 +12,7 @@ const entity = 'user'
 
 export const save = async (user) => await genericSave(user, isValid, entity)
 
-export const getAll = async () => await genericGetAll(entity)
+export const getAll = async (query) => await genericGetAll(query, entity)
 
 export const getOne = async (key, value) => await genericGetOne(key, value, entity)
 

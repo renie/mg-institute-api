@@ -18,8 +18,8 @@ export const findById = async (req, res, model) => {
     }
 }
 
-export const listAll = async (res, model) => 
-    res.status(200).send(await model.getAll())
+export const listAll = async (req, res, model) =>
+    res.status(200).send(await model.getAll(req.query))
 
 export const update = async (req, res, model, full = false) => {
     const operationName = full ? 'replace' : 'update'
