@@ -1,6 +1,6 @@
 {
-  "name": "AnimalSchool",
-  "version": "1.0.0",
+  "name": "MGIntituteAPI",
+  "version": "0.0.1",
   "description": "Marcelo Gusella Web School",
   "main": "index.js",
   "module": "main.js",

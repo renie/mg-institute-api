@@ -1,4 +1,4 @@
-# MG Institute API
+# MG Institute API [![Build Status](https://travis-ci.org/renie/mg-institute-api.svg?branch=master)](https://travis-ci.org/renie/mg-institute-api)
 
 ## Setup
 
