@@ -11,11 +11,12 @@ export const save = async (req, res, model) => {
 
 export const findById = async (req, res, model) => {
     try {
-        res.status(200).send(await model.getOne('_id', req.params.id))
+        const object = await model.getOne('_id', req.params.id)
+        object ? res.status(200).send(object) : res.status(404).send()
     } catch(e) {
         res.status(500).send(e.message)
     }
 }
 
-export const listAll = async ( res, model) => 
+export const listAll = async (res, model) => 
     res.status(200).send(await model.getAll())
