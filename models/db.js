@@ -1,14 +1,16 @@
 import { MongoClient } from 'mongodb'
+import config from '../config'
 
 
 let database = false
 
 export const connect = async () => {
-    const URI = `mongodb+srv://${process.env.USERDB}:${process.env.PASSDB}@${process.env.ADDRESSDB}/?${process.env.PARAMSDB}`
+    const URI = `mongodb+srv://${config.USERDB}:${config.PASSDB}@${config.ADDRESSDB}/?${config.PARAMSDB}`
 
     try {
         const conn = await MongoClient.connect(URI, { useNewUrlParser: true, useUnifiedTopology: true })
-        return conn.db(process.env.NAMEDB)
+        database = conn.db(config.NAMEDB)
+        return database
     } catch (err) {
         ThrowError('DB Connection Error', { meta: err })
     }
@@ -16,10 +18,10 @@ export const connect = async () => {
 
 export const getConnection = async () => {
     if (database) return database
-    return database = await connect()
+    await connect()
 }
 
 export const getCollection = async (collectionName) => {
-    const conn = await getConnection()
-    return conn.collection(collectionName)
+    await getConnection()
+    return database.collection(collectionName)
 }

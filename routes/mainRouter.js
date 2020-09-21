@@ -12,7 +12,7 @@ export const setRoute = (route, expressInstance, genericErrorFn = genericErrorFu
 }
 
 export const setAllRoutes = (
-    expressInstance, 
+    expressInstance,
     routes = [
         ...rootRoutes,
         ...userRoutes,
@@ -20,6 +20,6 @@ export const setAllRoutes = (
         ...notFoundRoutes
     ]
 ) => {
-    routes.forEach(route => setRoute(route, expressInstance))
+    routes.forEach((route) => setRoute(route, expressInstance))
     return expressInstance
 }

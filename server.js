@@ -1,27 +1,23 @@
 import express from 'express'
 import bodyParser from 'body-parser'
-import dotenv from 'dotenv'
 
 import { setAllRoutes } from './routes/mainRouter'
 import logger from './logger'
 import error from './error'
+import config from './config'
 
 
 global.logger = logger
 global.ThrowError = error
 
 
-if (process.env.NODE_ENV !== 'production')
-    dotenv.config()
+const defaultPort = config.APPPORT
 
-const defaultPort = process.env.APPPORT
-
-const logURLMappings = (expressInstance, logFn) => 
-    expressInstance._router.stack
-      .filter(r => r.route)
-      .map(r => r.route)
-      .map(r => `${r.path} - ${r.stack[0].method} - ${r.stack[0].name}`)
-      .forEach(r => logger.verbose(r))
+const logURLMappings = (expressInstance) => expressInstance._router.stack.
+    filter((r) => r.route).
+    map((r) => r.route).
+    map((r) => `${r.path} - ${r.stack[0].method} - ${r.stack[0].name}`).
+    forEach((r) => logger.verbose(r))
 
 
 const getExpressInstance = (expressLib) => {
@@ -32,7 +28,7 @@ const getExpressInstance = (expressLib) => {
 
 export const startServer = (expressInstance, port = defaultPort) => {
     logURLMappings(expressInstance)
-    expressInstance.listen(port, () => logger.info(`Animal School Server listening at port ${port}...`))
+    expressInstance.listen(port, () => logger.info(`MGIntitute API Server listening at port ${port}...`))
     return expressInstance
 }
 

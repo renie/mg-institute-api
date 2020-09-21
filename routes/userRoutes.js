@@ -1,10 +1,9 @@
-import {
-    save,
+import {save,
     listAll,
     findById,
     fullUpdate,
     partialUpdate,
-    remove, } from '../controllers/user'
+    remove } from '../controllers/user'
 
 
 export const userRoutes = [
@@ -37,5 +36,5 @@ export const userRoutes = [
         method: 'delete',
         url: '/api/user/:id',
         fn: remove
-    },
+    }
 ]

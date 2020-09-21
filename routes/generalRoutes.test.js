@@ -17,8 +17,8 @@ describe('General Routes', () => {
         }
 
         const res = {
-            status: code => ({
-                send: msg => {
+            status: (code) => ({
+                send: (msg) => {
                     returnTest = { code, msg }
                 }
             })

@@ -4,7 +4,7 @@ import {
     listAll as genericListAll,
     fullUpdate as genericFullUpdate,
     partialUpdate as genericPartialUpdate,
-    remove as genericRemove, } from './controller'
+    remove as genericRemove } from './controller'
 import User from '../models/user'
 
 
