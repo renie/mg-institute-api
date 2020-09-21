@@ -7,6 +7,8 @@ export const save = async (objectToSave, validationFn = () => true, entity) =>  
 
     if (!validationFn(object)) ThrowError(`Invalid ${entity} object (create)`, { meta: entity })
 
+    object.lastUpdate = new Date()
+
     try {
         const db = await getCollection(entity)
         const { insertedId } = await db.insertOne(object)
@@ -50,5 +52,25 @@ export const replace = async (id, newObject, validationFn = () => true, entity) 
         return modifiedCount
     } catch (err) {
         ThrowError(`${entity} not replaced`, { meta: {id, object, err} })
+    }
+}
+
+export const update = async (id, newValues, validationFn = () => true, entity) => {
+    const object = removeId(newValues)
+
+    if (!validationFn(object)) ThrowError(`Invalid ${entity} object (update)`, { meta: entity })
+    if (!isValidProperty(ID, id)) return null
+
+    const query = { [ID]: parseValue(ID, id) }
+
+    try {
+        const db = await getCollection(entity)
+        const { modifiedCount } = await db.updateOne(query, {$currentDate: {lastModified: true}, $set: object})
+
+        if (modifiedCount) logger.info(`${entity} updated`, { meta: id })
+
+        return modifiedCount
+    } catch (err) {
+        ThrowError(`${entity} not updated`, { meta: {id, object, err} })
     }
 }

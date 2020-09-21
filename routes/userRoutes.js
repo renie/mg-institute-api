@@ -1,4 +1,4 @@
-import { save, listAll, findById, fullUpdate } from '../controllers/user'
+import { save, listAll, findById, fullUpdate, partialUpdate } from '../controllers/user'
 
 
 export const userRoutes = [
@@ -21,5 +21,10 @@ export const userRoutes = [
         method: 'put',
         url: '/api/user/:id',
         fn: fullUpdate
+    },
+    {
+        method: 'patch',
+        url: '/api/user/:id',
+        fn: partialUpdate
     },
 ]

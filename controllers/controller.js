@@ -21,11 +21,17 @@ export const findById = async (req, res, model) => {
 export const listAll = async (res, model) => 
     res.status(200).send(await model.getAll())
 
-export const fullUpdate = async (req, res, model) => {
+export const update = async (req, res, model, full = false) => {
+    const operationName = full ? 'replace' : 'update'
+
     try {
-        const object = await model.replace(req.params.id, req.body)
+        const object = await model[operationName](req.params.id, req.body)
         object ? res.status(204).send() : res.status(404).send()
     } catch(e) {
         res.status(500).send(e.message)
     }
 }
+
+export const fullUpdate = async (req, res, model) => update(req, res, model, true)
+
+export const partialUpdate = async (req, res, model) => update(req, res, model, false)
