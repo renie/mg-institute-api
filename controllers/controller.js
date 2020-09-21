@@ -20,3 +20,12 @@ export const findById = async (req, res, model) => {
 
 export const listAll = async (res, model) => 
     res.status(200).send(await model.getAll())
+
+export const fullUpdate = async (req, res, model) => {
+    try {
+        const object = await model.replace(req.params.id, req.body)
+        object ? res.status(204).send() : res.status(404).send()
+    } catch(e) {
+        res.status(500).send(e.message)
+    }
+}

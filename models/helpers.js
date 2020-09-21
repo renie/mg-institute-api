@@ -1,7 +1,7 @@
 import { ObjectID } from 'mongodb'
 
 
-const ID = '_id'
+export const ID = '_id'
 
 export const isId = (key) => key === ID
 

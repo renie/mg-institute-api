@@ -1,4 +1,4 @@
-import { save, listAll, findById } from '../controllers/user'
+import { save, listAll, findById, fullUpdate } from '../controllers/user'
 
 
 export const userRoutes = [
@@ -16,5 +16,10 @@ export const userRoutes = [
         method: 'get',
         url: '/api/user/:id',
         fn: findById
-    }
+    },
+    {
+        method: 'put',
+        url: '/api/user/:id',
+        fn: fullUpdate
+    },
 ]

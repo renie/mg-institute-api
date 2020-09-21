@@ -1,11 +1,11 @@
 import { getCollection } from './db'
-import { removeId, isValidProperty, parseValue } from './helpers'
+import { ID, removeId, isValidProperty, parseValue } from './helpers'
 
 
 export const save = async (objectToSave, validationFn = () => true, entity) =>  {
     const object = removeId(objectToSave)
 
-    if (!validationFn(object)) ThrowError(`Invalid ${entity} object`, { meta: entity })
+    if (!validationFn(object)) ThrowError(`Invalid ${entity} object (create)`, { meta: entity })
 
     try {
         const db = await getCollection(entity)
@@ -28,4 +28,27 @@ export const getOne = async (key, value, entity) => {
     const db = await getCollection(entity)
     const result = await db.findOne({[key]: parseValue(key, value)})
     return result
+}
+
+export const replace = async (id, newObject, validationFn = () => true, entity) => {
+    const object = removeId(newObject)
+
+    if (!validationFn(object)) ThrowError(`Invalid ${entity} object (replace)`, { meta: entity })
+    if (!isValidProperty(ID, id)) return null
+
+    const query = { [ID]: parseValue(ID, id) }
+
+    try {
+        const db = await getCollection(entity)
+        const { modifiedCount } = await db.replaceOne(query, object)
+
+        if (modifiedCount){
+            await db.updateOne(query, {$currentDate: {lastModified: true}})
+            logger.info(`${entity} replaced`, { meta: id })
+        }
+
+        return modifiedCount
+    } catch (err) {
+        ThrowError(`${entity} not replaced`, { meta: {id, object, err} })
+    }
 }
