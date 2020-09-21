@@ -3,7 +3,8 @@ import {
     getAll as genericGetAll,
     getOne as genericGetOne,
     replace as genericReplace,
-    update as genericUpdate } from './model'
+    update as genericUpdate,
+    remove as genericRemove, } from './model'
 import { isValid } from './validations/user'
 
 
@@ -19,4 +20,7 @@ export const replace = async (id, newUser) => await genericReplace(id, newUser, 
 
 export const update = async (id, newValues) => await genericUpdate(id, newValues, ()=>true, entity)
 
-export default { save, getAll, getOne, replace, update }
+export const remove = async (id) => await genericRemove(id, entity)
+
+
+export default { save, getAll, getOne, replace, update, remove }

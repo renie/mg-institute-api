@@ -4,7 +4,7 @@ import {
     listAll as genericListAll,
     fullUpdate as genericFullUpdate,
     partialUpdate as genericPartialUpdate,
-} from './controller'
+    remove as genericRemove, } from './controller'
 import User from '../models/user'
 
 
@@ -17,3 +17,5 @@ export const listAll = async (_, res) => await genericListAll(res, User)
 export const fullUpdate = async (req, res) => await genericFullUpdate(req, res, User)
 
 export const partialUpdate = async (req, res) => await genericPartialUpdate(req, res, User)
+
+export const remove = async (req, res) => await genericRemove(req, res, User)

@@ -74,3 +74,11 @@ export const update = async (id, newValues, validationFn = () => true, entity) =
         ThrowError(`${entity} not updated`, { meta: {id, object, err} })
     }
 }
+
+export const remove = async (id, entity) => {
+    if (!isValidProperty(ID, id)) return null
+
+    const db = await getCollection(entity)
+    const { deletedCount } = await db.deleteOne({[ID]: parseValue(ID, id)})
+    return deletedCount
+}

@@ -1,4 +1,10 @@
-import { save, listAll, findById, fullUpdate, partialUpdate } from '../controllers/user'
+import {
+    save,
+    listAll,
+    findById,
+    fullUpdate,
+    partialUpdate,
+    remove, } from '../controllers/user'
 
 
 export const userRoutes = [
@@ -26,5 +32,10 @@ export const userRoutes = [
         method: 'patch',
         url: '/api/user/:id',
         fn: partialUpdate
+    },
+    {
+        method: 'delete',
+        url: '/api/user/:id',
+        fn: remove
     },
 ]

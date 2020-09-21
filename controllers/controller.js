@@ -25,8 +25,8 @@ export const update = async (req, res, model, full = false) => {
     const operationName = full ? 'replace' : 'update'
 
     try {
-        const object = await model[operationName](req.params.id, req.body)
-        object ? res.status(204).send() : res.status(404).send()
+        const updatesCount = await model[operationName](req.params.id, req.body)
+        updatesCount ? res.status(204).send() : res.status(404).send()
     } catch(e) {
         res.status(500).send(e.message)
     }
@@ -35,3 +35,12 @@ export const update = async (req, res, model, full = false) => {
 export const fullUpdate = async (req, res, model) => update(req, res, model, true)
 
 export const partialUpdate = async (req, res, model) => update(req, res, model, false)
+
+export const remove =  async (req, res, model) => {
+    try {
+        const deletedCount = await model.remove(req.params.id)
+        deletedCount ? res.status(204) : res.status(404).send()
+    } catch(e) {
+        res.status(500).send(e.message)
+    }
+}
