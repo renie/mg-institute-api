@@ -1,7 +1,7 @@
 import express from 'express'
 import bodyParser from 'body-parser'
 
-import { setAllRoutes } from './routes/mainRouter'
+import { setAllRoutes } from './routes/main'
 import logger from './logger'
 import error from './error'
 import config from './config'

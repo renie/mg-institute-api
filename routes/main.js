@@ -2,8 +2,8 @@ import {
     rootRoutes,
     notFoundRoutes,
     genericErrorFunction
-} from './generalRoutes'
-import { userRoutes } from './userRoutes'
+} from './general'
+import { userRoutes } from './user'
 
 
 export const setRoute = (route, expressInstance, genericErrorFn = genericErrorFunction) => {
