@@ -40,11 +40,6 @@ const startApp = ({
     expressLib: express,
     setRouteFn: setAllRoutes,
     port: defaultPort
-}) => {
-    startServer(
-        setRouteFn(getExpressInstance(expressLib)),
-        port
-    )
-}
+}) => startServer(setRouteFn(getExpressInstance(expressLib)), port)
 
 module.exports = startApp

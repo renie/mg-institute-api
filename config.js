@@ -1,6 +1,11 @@
 import dotenv from 'dotenv'
 
-if (process.env.NODE_ENV !== 'production') dotenv.config()
+const env = process.env.NODE_ENV
+
+if (env !== 'prod') {
+    const fileToLoad = env === 'dev' ? './.env' : './.env-test'
+    dotenv.config({ path: fileToLoad })
+}
 
 const config = {
     NODEENV: process.env.NODE_ENV,

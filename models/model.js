@@ -1,4 +1,4 @@
-import { getCollection } from './db'
+import { getCollection } from './db/db'
 import { ID, removeId, isValidProperty, parseValue } from './helpers'
 
 
