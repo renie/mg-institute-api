@@ -27,7 +27,7 @@ describe('General Routes', () => {
         it('should add route to express instance', () => {
             genericErrorFunction({}, res)
 
-            assert.deepEqual(returnTest, shouldReturn)
+            assert.deepStrictEqual(returnTest, shouldReturn)
         })
 
     })
