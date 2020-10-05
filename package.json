@@ -1,12 +1,12 @@
 {
-  "name": "MGIntituteAPI",
+  "name": "mgintitute_api",
   "version": "0.0.1",
   "description": "Marcelo Gusella Web School",
   "main": "index.js",
   "module": "main.js",
   "scripts": {
     "start": "node index.js",
-    "dev": "NODE_ENV=dev nodemon index.js",
+    "dev": "NODE_ENV=dev nodemon --inspect index.js",
     "dev-seed": "NODE_ENV=dev node seedes6.js",
     "test": "npx mocha ./**/*.test.js  --require esm",
     "test-seed": "NODE_ENV=test node seedes6.js",
@@ -27,6 +27,7 @@
     "eslint": "^7.9.0",
     "faker": "^5.1.0",
     "mocha": "^6.2.3",
+    "mongoose": "^5.10.7",
     "nodemon": "^2.0.4"
   },
   "repository": {
@@ -34,6 +35,3 @@
     "url": "git@github.com:renie/mg-institute-api.git"
   }
 }
-
-
-

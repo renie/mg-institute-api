@@ -43,7 +43,7 @@ export const partialUpdate = async (req, res, model) => await update(req, res, m
 export const remove =  async (req, res, model) => {
     try {
         const deletedCount = await model.remove(req.params.id)
-        deletedCount ? res.status(StatusCodes.NO_CONTENT) : res.status(StatusCodes.NOT_FOUND).send()
+        deletedCount ? res.status(StatusCodes.NO_CONTENT).send() : res.status(StatusCodes.NOT_FOUND).send()
     } catch (e) {
         res.status(StatusCodes.INTERNAL_SERVER_ERROR).send(e.message)
     }

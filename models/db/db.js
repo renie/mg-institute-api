@@ -1,16 +1,15 @@
-import { MongoClient } from 'mongodb'
+import mongoose from 'mongoose'
+
 import config from '../../config'
 
 
 let database = false
 
 export const connect = async () => {
-    const URI = `mongodb+srv://${config.USERDB}:${config.PASSDB}@${config.ADDRESSDB}/?${config.PARAMSDB}`
+    const URI = `mongodb+srv://${config.USERDB}:${config.PASSDB}@${config.ADDRESSDB}/${config.NAMEDB}?${config.PARAMSDB}`
 
     try {
-        const conn = await MongoClient.connect(URI, { useNewUrlParser: true, useUnifiedTopology: true })
-        database = conn.db(config.NAMEDB)
-        return database
+        database = await mongoose.connect(URI, { useNewUrlParser: true, useUnifiedTopology: true })
     } catch (err) {
         ThrowError('DB Connection Error', { meta: err })
     }
@@ -21,7 +20,9 @@ export const getConnection = async () => {
     await connect()
 }
 
-export const getCollection = async (collectionName) => {
+export const getModel = async ({model, schema, collectionName}) => {
     await getConnection()
-    return database.collection(collectionName)
+    return database.models[model] || database.model(model, schema, collectionName)
 }
+
+export const MONGOOSE_ERROR_TYPE = mongoose.Error.ValidationError
