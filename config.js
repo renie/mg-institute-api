@@ -17,12 +17,14 @@ const config = {
     PARAMSDB: process.env.PARAMSDB,
     FRONTENDADDRESS: process.env.FRONTENDADDRESS,
     HTTPSKEYFILE: process.env.HTTPSKEYFILE,
-    HTTPSCERTFILE: process.env.HTTPSCERTFILE
+    HTTPSCERTFILE: process.env.HTTPSCERTFILE,
+    SALTROUNDS: process.env.SALTROUNDS,
+    SECRETKEYHMAC: process.env.SECRETKEYHMAC
 }
 
 const getHTTPOptions = () => ({
-    key: fs.readFileSync(config.HTTPSKEYFILE),
-    cert: fs.readFileSync(config.HTTPSCERTFILE)
+    key: config.HTTPSKEYFILE ? fs.readFileSync(config.HTTPSKEYFILE) : '',
+    cert: config.HTTPSCERTFILE ? fs.readFileSync(config.HTTPSCERTFILE) : ''
 })
 
 config.HTTPOPTIONS = getHTTPOptions()

@@ -28,6 +28,7 @@ FRONTENDADDRESS=<address where front-end server is listening. ex:localhost:8080>
 HTTPSKEYFILE=<path to your ssl key file (will be generated on next step)>
 HTTPSCERTFILE=<path to your ssl cert file (will be generated on next step)>
 ```
+**After running seed, you should have a user with email `test@test.com` and password `123456`. This user can be used to test logged API accesses.**
 
 Seed dev database:
 

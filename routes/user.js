@@ -1,4 +1,5 @@
-import {save,
+import {
+    save,
     listAll,
     findById,
     fullUpdate,
@@ -10,31 +11,37 @@ export const userRoutes = [
     {
         method: 'post',
         url: '/api/user',
-        fn: save
+        fn: save,
+        auth: true
     },
     {
         method: 'get',
         url: '/api/user',
-        fn: listAll
+        fn: listAll,
+        auth: true
     },
     {
         method: 'get',
         url: '/api/user/:id',
-        fn: findById
+        fn: findById,
+        auth: true
     },
     {
         method: 'put',
         url: '/api/user/:id',
-        fn: fullUpdate
+        fn: fullUpdate,
+        auth: true
     },
     {
         method: 'patch',
         url: '/api/user/:id',
-        fn: partialUpdate
+        fn: partialUpdate,
+        auth: true
     },
     {
         method: 'delete',
         url: '/api/user/:id',
-        fn: remove
+        fn: remove,
+        auth: true
     }
 ]

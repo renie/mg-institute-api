@@ -4,10 +4,14 @@ import {
     genericErrorFunction
 } from './general'
 import { userRoutes } from './user'
+import { authRoutes } from './auth'
+import { verifyToken } from '../controllers/auth'
 
 
 export const setRoute = (route, expressInstance, genericErrorFn = genericErrorFunction) => {
-    expressInstance[route.method](route.url, route.fn, route.errorFn || genericErrorFn)
+    if (route.auth) expressInstance[route.method](route.url, verifyToken, route.fn, route.errorFn || genericErrorFn)
+    else expressInstance[route.method](route.url, route.fn, route.errorFn || genericErrorFn)
+
     return expressInstance
 }
 
@@ -16,6 +20,7 @@ export const setAllRoutes = (
     routes = [
         ...rootRoutes,
         ...userRoutes,
+        ...authRoutes,
 
         ...notFoundRoutes
     ]

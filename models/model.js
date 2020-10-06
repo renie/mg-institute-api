@@ -59,16 +59,17 @@ export const update = async (id, newValues, entity) => {
     const object = removeId(newValues)
 
     if (!isValidProperty(ID, id)) return null
-
     const query = { [ID]: parseValue(ID, id) }
+
 
     try {
         const model = await getModel(entity)
 
-        const { modifiedCount } = await model.updateOne(query, {$currentDate: {lastModified: true}, $set: object})
-        if (modifiedCount) logger.info(`${entity.model} updated`, { meta: id })
+        const { nModified } = await model.updateOne(query, {$currentDate: {lastModified: true}, $set: object})
 
-        return modifiedCount
+        if (nModified) logger.info(`${entity.model} updated`, { meta: id })
+
+        return nModified
     } catch (err) {
         if (err instanceof MONGOOSE_ERROR_TYPE) ThrowError(`${entity.model} not updated`, { meta: {id, object, err: err.errors} })
         ThrowError(`${entity.model} not updated`, { meta: {id, object, err} })
