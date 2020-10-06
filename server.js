@@ -1,5 +1,7 @@
 import express from 'express'
 import bodyParser from 'body-parser'
+import helmet from 'helmet'
+import cors from 'cors'
 
 import { setAllRoutes } from './routes/main'
 import logger from './logger'
@@ -22,7 +24,14 @@ const logURLMappings = (expressInstance) => expressInstance._router.stack.
 
 const getExpressInstance = (expressLib) => {
     const instance = expressLib()
+
+    const corsOptions = {
+        origin: config.FRONTENDADDRESS
+    }
+
     instance.use(bodyParser.json())
+    instance.use(helmet())
+    instance.use(cors(corsOptions))
     return instance
 }
 

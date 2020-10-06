@@ -24,6 +24,7 @@ USERDB=<database user>
 PASSDB=<database password>
 NAMEDB=<database name>
 PARAMSDB=<database extra params for connection string>
+FRONTENDADDRESS=<address where front-end server is listening. ex:localhost:8080>
 ```
 
 Seed dev database:

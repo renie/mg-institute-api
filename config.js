@@ -14,7 +14,8 @@ const config = {
     USERDB: process.env.USERDB,
     PASSDB: process.env.PASSDB,
     NAMEDB: process.env.NAMEDB,
-    PARAMSDB: process.env.PARAMSDB
+    PARAMSDB: process.env.PARAMSDB,
+    FRONTENDADDRESS: process.env.FRONTENDADDRESS,
 }
 
 export default config
