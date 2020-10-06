@@ -195,7 +195,7 @@
         "no-sequences": "error",
         "no-shadow": "warn",
         "no-spaced-func": "error",
-        "no-sync": "error",
+        "no-sync": "warn",
         "no-tabs": "error",
         "no-template-curly-in-string": "error",
         "no-ternary": "off",

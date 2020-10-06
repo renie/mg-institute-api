@@ -25,6 +25,8 @@ PASSDB=<database password>
 NAMEDB=<database name>
 PARAMSDB=<database extra params for connection string>
 FRONTENDADDRESS=<address where front-end server is listening. ex:localhost:8080>
+HTTPSKEYFILE=<path to your ssl key file (will be generated on next step)>
+HTTPSCERTFILE=<path to your ssl cert file (will be generated on next step)>
 ```
 
 Seed dev database:
@@ -40,6 +42,60 @@ Seed test database:
 ```
 npm run dev-test
 ```
+
+### SSL/TSL config (dev/staging)
+This config is important to have an HTTPS environment for devs.
+ 
+#### Become a Certificate Authority
+
+Generate private key
+```
+openssl genrsa -des3 -out myCA.key 2048
+```
+Generate root certificate
+```
+openssl req -x509 -new -nodes -key myCA.key -sha256 -days 825 -out myCA.pem
+```
+
+#### Create CA-signed certs
+
+Create a variable to ease next steps
+```
+NAME=localhost
+```
+Generate a private key
+```
+openssl genrsa -out $NAME.key 2048
+```
+Create a certificate-signing request
+```
+openssl req -new -key $NAME.key -out $NAME.csr
+```
+Create a config file for extensions
+```
+touch $NAME.ext
+```
+Set these variables in that recently created file
+```
+authorityKeyIdentifier=keyid,issuer
+basicConstraints=CA:FALSE
+keyUsage = digitalSignature, nonRepudiation, keyEncipherment, dataEncipherment
+subjectAltName = @alt_names
+[alt_names]
+DNS.1 = localhost
+IP.1 = 127.0.0.1
+```
+Create(finally :roll_eyes:) the signed certificate
+```
+openssl x509 -req -in $NAME.csr -CA myCA.pem -CAkey myCA.key -CAcreateserial -out $NAME.crt -days 825 -sha256 -extfile $NAME.ext
+```
+Check if everything went fine
+```
+openssl verify -CAfile myCA.pem -verify_hostname $NAME $NAME.crt
+```
+
+#### Now import your CA file on your browser
+Import myCA.pem as an Authority in your Chrome settings (Settings > Manage certificates > Authorities > Import)
 
 ### Database seeding options
 

@@ -2,3 +2,9 @@ node_modules
 logs
 .env*
 .idea
+*.crt
+*.csr
+*.ext
+*.key
+*.pem
+*.srl

@@ -1,3 +1,4 @@
+import https from 'https'
 import express from 'express'
 import bodyParser from 'body-parser'
 import helmet from 'helmet'
@@ -37,8 +38,9 @@ const getExpressInstance = (expressLib) => {
 
 export const startServer = (expressInstance, port = defaultPort) => {
     logURLMappings(expressInstance)
-    expressInstance.listen(port, () => logger.info(`MGIntitute API Server listening at port ${port}...`))
-    return expressInstance
+    const server = https.createServer(config.HTTPOPTIONS, expressInstance)
+    server.listen(port, () => logger.info(`MGIntitute API Server listening at port ${port}...`))
+    return server
 }
 
 const startApp = ({
