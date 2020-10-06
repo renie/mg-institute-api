@@ -95,7 +95,57 @@ openssl verify -CAfile myCA.pem -verify_hostname $NAME $NAME.crt
 ```
 
 #### Now import your CA file on your browser
-Import myCA.pem as an Authority in your Chrome settings (Settings > Manage certificates > Authorities > Import)
+Import myCA.pem as an Authority in your Chrome settings *(Settings > Manage certificates > Authorities > Import)*
+
+### Setup NGinX as reverse proxy
+
+===
+
+**This section is important JUST IF you want to have your dev environment mirroring production environment. Otherwise you can just run a separate server to frontend with `http-server`, for instance**
+
+===
+
+#### Ubuntu/Debian based distros
+Just set up run permissions on script and run it
+```
+sudo chmod +x ./nginx_install.sh
+sudo ./nginx_install.sh
+```
+
+#### Other environments
+
+- Install NGinX on last available version
+- Create a config file with following contents
+```
+server {
+    server_name _;
+    listen <host address>:443 ssl;
+    ssl_certificate     <path to your SSL/TLS certificate file>;
+    ssl_certificate_key <path to your SSL/TLS key file>;
+    ssl_session_timeout 30m;
+    ssl_session_cache   shared:SSL:400k;
+    ssl_protocols TLSv1 TLSv1.1 TLSv1.2;
+    server_tokens off;
+    charset utf-8;
+
+    location / {
+            proxy_pass https://<host address>:<host port>;
+            proxy_http_version 1.1;
+            proxy_set_header Upgrade \$http_upgrade;
+            proxy_set_header Connection 'upgrade';
+            proxy_set_header Host \$host;
+            proxy_cache_bypass \$http_upgrade;
+    }
+
+    location ~* ^.+\.(html|css|js|pdf|jpg|jpeg|png|svg) {
+        root <path to your frontend public dir>;
+    }
+}
+```
+- Reload NGinX
+```
+sudo nginx -s reload
+```
 
 ### Database seeding options
 
