@@ -188,12 +188,6 @@ Development environment:
 npm run dev
 ```
 
-Production environment:
-
-```
-npm start
-```
-
 ## Run Tests
 
 ```
@@ -204,3 +198,6 @@ npm test
 
 If you are creating a new entity, it is very likely you want to seed a new collection.
 The place for it is `models/db/seeds.js`.
+
+## Production Environment
+If you need instructions to create a new production server, you might want to have a look [here](PRODSETUP.md).

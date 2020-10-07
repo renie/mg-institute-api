@@ -8,8 +8,6 @@ echo "deb-src https://nginx.org/packages/ubuntu/ $release nginx" | sudo tee /etc
 sudo apt-get update
 sudo apt-get install nginx
 
-echo "What is the servername? (ex: localhost)"
-read HOST
 echo "What is the frontend static path? (ex: /home/user/frontend-project)"
 read FRONTEND
 echo "What is the server port? (ex: 3000)"
@@ -22,8 +20,9 @@ read SSLCERT
 
 sudo cat <<EOF >> /etc/nginx/conf.d/mginstitute.conf
 server {
-    server_name _;
-    listen $HOST:443 ssl;
+    server_name         _;
+    listen              443 ssl;
+    listen              [::]:443 ssl;
     ssl_certificate     $SSLCERT;
     ssl_certificate_key $SSLKEY;
     ssl_session_timeout 30m;
@@ -33,12 +32,12 @@ server {
     charset utf-8;
 
     location / {
-            proxy_pass https://$HOST:$PORT;
+            proxy_pass https://localhost:$PORT;
             proxy_http_version 1.1;
-            proxy_set_header Upgrade \$http_upgrade;
+            proxy_set_header Upgrade $http_upgrade;
             proxy_set_header Connection 'upgrade';
-            proxy_set_header Host \$host;
-            proxy_cache_bypass \$http_upgrade;
+            proxy_set_header Host $host;
+            proxy_cache_bypass $http_upgrade;
     }
 
     location ~* ^.+\.(html|css|js|pdf|jpg|jpeg|png|svg) {
