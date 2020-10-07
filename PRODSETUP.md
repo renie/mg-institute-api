@@ -106,3 +106,6 @@ pm2 save
 pm2 restart <app name>
 sudo service nginx restart
 ```
+
+### Setup deploy script
+Copy the script `deploy.sh` to home directory and change paths, URL and app name within.
