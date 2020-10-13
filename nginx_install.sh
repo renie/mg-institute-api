@@ -20,29 +20,38 @@ read SSLCERT
 
 sudo cat <<EOF >> /etc/nginx/conf.d/mginstitute.conf
 server {
-    server_name         _;
-    listen              443 ssl;
-    listen              [::]:443 ssl;
-    ssl_certificate     $SSLCERT;
-    ssl_certificate_key $SSLKEY;
-    ssl_session_timeout 30m;
-    ssl_session_cache   shared:SSL:400k;
-    ssl_protocols TLSv1 TLSv1.1 TLSv1.2;
-    server_tokens off;
-    charset utf-8;
+      server_name _;
+      listen localhost:443 ssl;
+      ssl_certificate     $SSLCERT;
+      ssl_certificate_key $SSLKEY;
+      ssl_session_timeout 30m;
+      ssl_session_cache   shared:SSL:400k;
+      ssl_protocols TLSv1 TLSv1.1 TLSv1.2;
+      server_tokens off;
+      charset utf-8;
 
-    location / {
-            proxy_pass https://localhost:$PORT;
-            proxy_http_version 1.1;
-            proxy_set_header Upgrade $http_upgrade;
-            proxy_set_header Connection 'upgrade';
-            proxy_set_header Host $host;
-            proxy_cache_bypass $http_upgrade;
-    }
+      location /api/ {
+          proxy_pass https://localhost:$PORT;
+          proxy_http_version 1.1;
+          proxy_set_header Upgrade $http_upgrade;
+          proxy_set_header Connection 'upgrade';
+          proxy_set_header Host $host;
+          proxy_cache_bypass $http_upgrade;
+      }
 
-    location ~* ^.+\.(html|css|js|pdf|jpg|jpeg|png|svg) {
-        root $FRONTEND;
-    }
+      location ~* ^.+\.(html|css|js|pdf|jpg|jpeg|png|svg) {
+          root $FRONTEND;
+      }
+
+      location ~* ^\/?$ {
+          root $FRONTEND;
+          try_files /index.html =404;
+      }
+
+      location / {
+          root $FRONTEND;
+          try_files $uri.html $uri / =404;
+      }
 }
 EOF
 

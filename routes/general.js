@@ -1,7 +1,7 @@
 export const rootRoutes = [
     {
         method: 'get',
-        url: '/',
+        url: '/api',
         fn: (_, res) => res.send('Root')
     }
 ]
