@@ -4,6 +4,7 @@ import {
     genericErrorFunction
 } from './general'
 import { userRoutes } from './user'
+import { videoRoutes } from './video'
 import { authRoutes } from './auth'
 import { verifyToken } from '../controllers/auth'
 
@@ -20,6 +21,7 @@ export const setAllRoutes = (
     routes = [
         ...rootRoutes,
         ...userRoutes,
+        ...videoRoutes,
         ...authRoutes,
 
         ...notFoundRoutes
