@@ -141,6 +141,20 @@ server {
     location ~* ^.+\.(html|css|js|pdf|jpg|jpeg|png|svg) {
         root <path to your frontend public dir>;
     }
+
+    location ~* ^.+\.(html|css|js|pdf|jpg|jpeg|png|svg) {
+        root <path to your frontend public dir>;
+    }
+
+    location ~* ^\/?$ {
+        root <path to your frontend public dir>;
+        try_files /index.html =404;
+    }
+
+    location / {
+        root <path to your frontend public dir>;
+        try_files $uri.html $uri / =404;
+    }
 }
 ```
 - Reload NGinX
