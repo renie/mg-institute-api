@@ -1,0 +1,5 @@
+exclude_patterns:
+- "**/*.test.js"
+- "**/node_modules"
+- "seeder.js"
+- "routes"

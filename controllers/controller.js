@@ -1,26 +1,46 @@
 import { StatusCodes } from 'http-status-codes'
 
+// PRIVATE
+const _doModelSave = async ({req, res, model}) => {
+    const objectId = await model.save(req.body)
+    res.status(StatusCodes.CREATED).
+        set('Location', `${req.route.path}/${objectId}`).
+        send({ id: objectId })
+}
 
-export const save = async (req, res, model) => {
+const _doModelChange = async ({req, res, model}, operationName) => {
+    const modelsChanged = (
+        operationName === 'remove'
+            ? await model[operationName](req.params.id)
+            : await model[operationName](req.params.id, req.body)
+    )
+
+    modelsChanged
+        ? res.status(StatusCodes.NO_CONTENT).send()
+        : res.status(StatusCodes.NOT_FOUND).send()
+}
+
+const _execChosenOperation = async (params, operation) => (operation === 'save' ? await _doModelSave(params) : await _doModelChange(params, operation))
+
+const _execModelModification = async (params, operation) => {
     try {
-        const objectId = await model.save(req.body)
-        res.status(StatusCodes.CREATED).
-            set('Location', `${req.route.path}/${objectId}`).
-            send({ id: objectId })
+        await _execChosenOperation(params, operation)
     } catch (e) {
-        res.status(StatusCodes.INTERNAL_SERVER_ERROR).send({
+        params.res.status(StatusCodes.INTERNAL_SERVER_ERROR).send({
             message: e.message,
             reasons: [e.meta.err.name.properties]
         })
     }
 }
+// PRIVATE END
+
+
+export const save = async (req, res, model) => await _execModelModification({req, res, model})
 
 export const findById = async (req, res, model) => {
     try {
         const object = await model.getOne('_id', req.params.id)
-        object
-            ? res.status(StatusCodes.OK).send(object)
-            : res.status(StatusCodes.NOT_FOUND).send()
+        object ? res.status(StatusCodes.OK).send(object) : res.status(StatusCodes.NOT_FOUND).send()
     } catch (e) {
         res.status(StatusCodes.INTERNAL_SERVER_ERROR).send(e.message)
     }
@@ -28,32 +48,10 @@ export const findById = async (req, res, model) => {
 
 export const listAll = async (req, res, model) => res.status(StatusCodes.OK).send(await model.getAll(req.query))
 
-export const update = async (req, res, model, full = false) => {
-    const operationName = full ? 'replace' : 'update'
-
-    try {
-        const updatesCount = await model[operationName](req.params.id, req.body)
-        updatesCount ? res.status(StatusCodes.NO_CONTENT).send() : res.status(StatusCodes.NOT_FOUND).send()
-    } catch (e) {
-        res.status(StatusCodes.INTERNAL_SERVER_ERROR).send({
-            message: e.message,
-            reasons: [e.meta.err.name.properties]
-        })
-    }
-}
+export const update = async (req, res, model, full = false) => await _execModelModification({req, res, model}, (full ? 'replace' : 'update'))
 
 export const fullUpdate = async (req, res, model) => await update(req, res, model, true)
 
 export const partialUpdate = async (req, res, model) => await update(req, res, model, false)
 
-export const remove =  async (req, res, model) => {
-    try {
-        const deletedCount = await model.remove(req.params.id)
-        deletedCount ? res.status(StatusCodes.NO_CONTENT).send() : res.status(StatusCodes.NOT_FOUND).send()
-    } catch (e) {
-        res.status(StatusCodes.INTERNAL_SERVER_ERROR).send({
-            message: e.message,
-            reasons: [e.meta.err.name.properties]
-        })
-    }
-}
+export const remove =  async (req, res, model) => await _execModelModification({req, res, model}, 'remove')

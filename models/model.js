@@ -1,6 +1,43 @@
 import { getModel, MONGOOSE_ERROR_TYPE } from './db/db'
 import { ID, removeId, isValidProperty, parseValue } from './helpers'
 
+// PRIVATE
+const _execReplace = async ({object, query, id, model, entity}) => {
+    await model.validate(object)
+    const { nModified } = await model.replaceOne(query, object)
+
+    if (nModified) {
+        await model.updateOne(query, {$currentDate: {lastModified: true}})
+        logger.info(`${entity.model} replaced`, {meta: id})
+    }
+
+    return nModified
+}
+
+const _execUpdate = async ({object, query, id, model, entity}) => {
+    const { nModified } = await model.updateOne(query, {$currentDate: {lastModified: true}, $set: object})
+    if (nModified) logger.info(`${entity.model} updated`, {meta: id})
+    return nModified
+}
+
+const _execModification = async (params, operation) => (operation === 'replace' ? await _execReplace(params) : await _execUpdate(params))
+
+const _saveNewVersion = async (id, newThings, entity, operation) => {
+    const object = removeId(newThings)
+
+    if (!isValidProperty(ID, id)) return null
+
+    const query = { [ID]: parseValue(ID, id) }
+
+    try {
+        const model = await getModel(entity)
+        return await _execModification({object, query, id, model, entity}, operation)
+    } catch (err) {
+        if (err instanceof MONGOOSE_ERROR_TYPE) ThrowError(`${entity.model} not ${operation}d`, { meta: {id, object, err: err.errors} })
+        ThrowError(`${entity.model} not ${operation}d`, { meta: {id, object, err} })
+    }
+}
+// PRIVATE END
 
 export const save = async (objectToSave, entity) =>  {
     const object = removeId(objectToSave)
@@ -30,51 +67,9 @@ export const getOne = async (key, value, entity) => {
     return await db.findOne({[key]: parseValue(key, value)})
 }
 
-export const replace = async (id, newObject, entity) => {
-    const object = removeId(newObject)
+export const replace = async (id, newObject, entity) => await _saveNewVersion(id, newObject, entity, 'replace')
 
-    if (!isValidProperty(ID, id)) return null
-
-    const query = { [ID]: parseValue(ID, id) }
-
-    try {
-        const model = await getModel(entity)
-        await model.validate(object)
-
-        const { nModified } = await model.replaceOne(query, object)
-
-        if (nModified){
-            await model.updateOne(query, {$currentDate: {lastModified: true}})
-            logger.info(`${entity.model} replaced`, { meta: id })
-        }
-
-        return nModified
-    } catch (err) {
-        if (err instanceof MONGOOSE_ERROR_TYPE) ThrowError(`${entity.model} not replaced`, { meta: {id, object, err: err.errors} })
-        ThrowError(`${entity.model} not replaced`, { meta: {id, object, err} })
-    }
-}
-
-export const update = async (id, newValues, entity) => {
-    const object = removeId(newValues)
-
-    if (!isValidProperty(ID, id)) return null
-    const query = { [ID]: parseValue(ID, id) }
-
-
-    try {
-        const model = await getModel(entity)
-
-        const { nModified } = await model.updateOne(query, {$currentDate: {lastModified: true}, $set: object})
-
-        if (nModified) logger.info(`${entity.model} updated`, { meta: id })
-
-        return nModified
-    } catch (err) {
-        if (err instanceof MONGOOSE_ERROR_TYPE) ThrowError(`${entity.model} not updated`, { meta: {id, object, err: err.errors} })
-        ThrowError(`${entity.model} not updated`, { meta: {id, object, err} })
-    }
-}
+export const update = async (id, newValues, entity) => await _saveNewVersion(id, newValues, entity, 'update')
 
 export const remove = async (id, entity) => {
     if (!isValidProperty(ID, id)) return null

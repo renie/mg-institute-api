@@ -7,6 +7,14 @@
 This project requires **NodeJS (version >= 14.3)**, and **MongoDB (version >= 4.2.9)**.
 If you prefer to use a remote database, cloud MongoDB for instance, you just need to install NodeJS on your machine. Other deps will be download on next step.
 
+### Developers
+You will need [codeclimate installed](https://github.com/codeclimate/codeclimate/blob/master/README.md) on your machine. In order to do that, you will have to [install docker](https://docs.docker.com/engine/install/ubuntu/) before.
+
+You can run it with:
+```
+npm run codeclimate
+```
+
 ## Setup
 
 Install deps:

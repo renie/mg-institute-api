@@ -10,7 +10,8 @@
     "dev-seed": "NODE_ENV=dev node seedes6.js",
     "test": "npx mocha ./**/*.test.js  --require esm",
     "test-seed": "NODE_ENV=test node seedes6.js",
-    "lint": "npx eslint ."
+    "lint": "npx eslint .",
+    "codeclimate": "codeclimate anylize"
   },
   "author": "Renie Siqueira",
   "license": "MIT",
