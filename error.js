@@ -1,6 +1,8 @@
-const ThrowError = (message, meta) => {
+const ThrowError = (message, {meta}) => {
     logger.error(message, { meta })
-    throw Error(message)
+    const error = Error(message)
+    error.meta = {...meta}
+    throw error
 }
 
 export default ThrowError

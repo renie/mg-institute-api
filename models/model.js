@@ -41,16 +41,16 @@ export const replace = async (id, newObject, entity) => {
         const model = await getModel(entity)
         await model.validate(object)
 
-        const { modifiedCount } = await model.replaceOne(query, object)
+        const { nModified } = await model.replaceOne(query, object)
 
-        if (modifiedCount){
+        if (nModified){
             await model.updateOne(query, {$currentDate: {lastModified: true}})
             logger.info(`${entity.model} replaced`, { meta: id })
         }
 
-        return modifiedCount
+        return nModified
     } catch (err) {
-        if (err instanceof MONGOOSE_ERROR_TYPE) ThrowError(`${entity} not replaced`, { meta: {id, object, err: err.errors} })
+        if (err instanceof MONGOOSE_ERROR_TYPE) ThrowError(`${entity.model} not replaced`, { meta: {id, object, err: err.errors} })
         ThrowError(`${entity.model} not replaced`, { meta: {id, object, err} })
     }
 }

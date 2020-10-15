@@ -8,7 +8,10 @@ export const save = async (req, res, model) => {
             set('Location', `${req.route.path}/${objectId}`).
             send({ id: objectId })
     } catch (e) {
-        res.status(StatusCodes.INTERNAL_SERVER_ERROR).send(e.message)
+        res.status(StatusCodes.INTERNAL_SERVER_ERROR).send({
+            message: e.message,
+            reasons: [e.meta.err.name.properties]
+        })
     }
 }
 
@@ -32,7 +35,10 @@ export const update = async (req, res, model, full = false) => {
         const updatesCount = await model[operationName](req.params.id, req.body)
         updatesCount ? res.status(StatusCodes.NO_CONTENT).send() : res.status(StatusCodes.NOT_FOUND).send()
     } catch (e) {
-        res.status(StatusCodes.INTERNAL_SERVER_ERROR).send(e.message)
+        res.status(StatusCodes.INTERNAL_SERVER_ERROR).send({
+            message: e.message,
+            reasons: [e.meta.err.name.properties]
+        })
     }
 }
 
@@ -45,6 +51,9 @@ export const remove =  async (req, res, model) => {
         const deletedCount = await model.remove(req.params.id)
         deletedCount ? res.status(StatusCodes.NO_CONTENT).send() : res.status(StatusCodes.NOT_FOUND).send()
     } catch (e) {
-        res.status(StatusCodes.INTERNAL_SERVER_ERROR).send(e.message)
+        res.status(StatusCodes.INTERNAL_SERVER_ERROR).send({
+            message: e.message,
+            reasons: [e.meta.err.name.properties]
+        })
     }
 }

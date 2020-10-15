@@ -22,9 +22,14 @@ export const login = async (req, res) => {
 export const logout = async (req, res) => {
     const token = req.headers['x-access-token']
     if (!token) return res.status(StatusCodes.UNAUTHORIZED).send({ auth: false, message: 'No token provided.' })
-    const { id } = await jwt.verify(token, config.SECRETKEYHMAC)
-    await User.update(id, { logged: false })
-    res.status(StatusCodes.OK).send({ auth: false, token: null })
+
+    try {
+        const {id} = await jwt.decode(token, config.SECRETKEYHMAC)
+        await User.update(id, { logged: false })
+        res.status(StatusCodes.OK).send({ auth: false, token: null })
+    } catch (e) {
+        res.status(StatusCodes.BAD_REQUEST).send({ auth: false, token })
+    }
 }
 
 export const verifyToken = async (req, res, next) => {
