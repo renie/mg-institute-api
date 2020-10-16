@@ -1,6 +1,6 @@
 import assert from 'assert'
 
-import { genericErrorFunction } from './general'
+import { genericErrorFunction } from '../general'
 
 describe('General Routes', () => {
 

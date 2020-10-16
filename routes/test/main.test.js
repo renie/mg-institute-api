@@ -1,5 +1,5 @@
 import assert from 'assert'
-import { setRoute, setAllRoutes } from './main'
+import { setRoute, setAllRoutes } from '../main'
 
 
 describe('Main Router', () => {

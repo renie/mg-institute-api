@@ -8,7 +8,7 @@
     "start": "node index.js",
     "dev": "NODE_ENV=dev nodemon --inspect index.js",
     "dev-seed": "NODE_ENV=dev node seedes6.js",
-    "test": "npx mocha ./**/*.test.js  --require esm",
+    "test": "npx mocha \"./{,!(node_modules)/**/test/}*.test.js\"  --require esm",
     "test-seed": "NODE_ENV=test node seedes6.js",
     "lint": "npx eslint .",
     "codeclimate": "codeclimate anylize"
