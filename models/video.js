@@ -10,8 +10,7 @@ export const VIDEO = {
     schema: {
         name: {type: String, required: true},
         url: {type: String, required: true},
-        lastUpdate: {type: Date, default: Date.now},
-        logged: {type: Boolean, default: false}
+        lastUpdate: {type: Date, default: Date.now}
     }
 }
 

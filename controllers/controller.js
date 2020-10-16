@@ -26,16 +26,17 @@ const _execModelModification = async (params, operation) => {
     try {
         await _execChosenOperation(params, operation)
     } catch (e) {
+        const reasons = e.meta ? e.meta.err.name.properties : e
         params.res.status(StatusCodes.INTERNAL_SERVER_ERROR).send({
             message: e.message,
-            reasons: [e.meta.err.name.properties]
+            reasons: [reasons]
         })
     }
 }
 // PRIVATE END
 
 
-export const save = async (req, res, model) => await _execModelModification({req, res, model})
+export const save = async (req, res, model) => await _execModelModification({req, res, model}, 'save')
 
 export const findById = async (req, res, model) => {
     try {
