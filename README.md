@@ -10,7 +10,12 @@ If you prefer to use a remote database, cloud MongoDB for instance, you just nee
 ### Developers
 You will need [codeclimate installed](https://github.com/codeclimate/codeclimate/blob/master/README.md) on your machine. In order to do that, you will have to [install docker](https://docs.docker.com/engine/install/ubuntu/) before.
 
-You can run it with:
+Install engines (may take a while to finish and need sudo):
+```
+code climate engines:install
+```
+
+You can run it with (may need sudo):
 ```
 npm run codeclimate
 ```
