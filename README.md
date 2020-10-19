@@ -12,7 +12,7 @@ You will need [codeclimate installed](https://github.com/codeclimate/codeclimate
 
 Install engines (may take a while to finish and need sudo):
 ```
-code climate engines:install
+codeclimate engines:install
 ```
 
 You can run it with (may need sudo):
