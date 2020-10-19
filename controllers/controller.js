@@ -41,6 +41,7 @@ export const save = async (req, res, model) => await _execModelModification({req
 export const findById = async (req, res, model) => {
     try {
         const object = await model.getOne('_id', req.params.id)
+        await object.populate('videos').execPopulate()
         object ? res.status(StatusCodes.OK).send(object) : res.status(StatusCodes.NOT_FOUND).send()
     } catch (e) {
         res.status(StatusCodes.INTERNAL_SERVER_ERROR).send(e.message)

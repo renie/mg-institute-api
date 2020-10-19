@@ -5,6 +5,7 @@ import {
 } from './general'
 import { userRoutes } from './user'
 import { videoRoutes } from './video'
+import { courseRoutes } from './course'
 import { authRoutes } from './auth'
 import { verifyToken } from '../controllers/auth'
 
@@ -22,6 +23,7 @@ export const setAllRoutes = (
         ...rootRoutes,
         ...userRoutes,
         ...videoRoutes,
+        ...courseRoutes,
         ...authRoutes,
 
         ...notFoundRoutes

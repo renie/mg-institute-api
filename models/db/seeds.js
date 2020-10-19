@@ -1,4 +1,4 @@
 import { user } from './user'
-import { video } from './video'
+import { course } from './course'
 
-export const seeds = [user, video]
+export const seeds = [user, course]

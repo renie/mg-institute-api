@@ -20,9 +20,33 @@ export const getConnection = async () => {
     await connect()
 }
 
-export const getModel = async ({model, schema, collectionName}) => {
+// eslint-disable-next-line func-style
+export async function loadSubModels (schema) {
+    const schemaCopy = {...schema}
+    const propsChanged = await Promise
+        .all(Object
+            .keys(schema)
+            .filter((key) => schema[key].hasOwnProperty('ref') || (Array.isArray(schema[key]) && schema[key][0].hasOwnProperty('ref')))
+            .map(async (key) => {
+                await getModel(schema[key].ref || schema[key][0].ref)
+                return key
+            }))
+
+    propsChanged.forEach((key) => {
+        const prop = schema[key]
+        if (prop.ref) schemaCopy[key].ref = prop.ref
+        else schemaCopy[key][0].ref = prop[0].ref.model
+    })
+
+    return schemaCopy
+}
+
+// eslint-disable-next-line func-style
+export async function getModel ({model, schema, collectionName}) {
+    if (database.models && database.models[model]) return database.models[model]
+    const loadedSchema = await loadSubModels(schema)
     await getConnection()
-    return database.models[model] || database.model(model, schema, collectionName)
+    return database.model(model, loadedSchema, collectionName)
 }
 
 export const MONGOOSE_ERROR_TYPE = mongoose.Error.ValidationError

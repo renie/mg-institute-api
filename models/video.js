@@ -8,13 +8,15 @@ import {
 export const VIDEO = {
     model: 'Video',
     schema: {
-        name: {type: String, required: true},
+        title: {type: String, required: true},
         url: {type: String, required: true},
         lastUpdate: {type: Date, default: Date.now}
     }
 }
 
 export const save = async (video) => await genericSave(video, VIDEO)
+
+export const saveMultiple = async (videos) => await Promise.all(videos.map(async (video) => await genericSave(video, VIDEO)))
 
 export const getAll = async (query) => await genericGetAll(query, VIDEO)
 

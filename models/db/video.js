@@ -1,9 +1,9 @@
-import faker from "faker/locale/pt_BR"
+import faker from "faker/locale/en"
 import {VIDEO} from "../video"
 
 const data = [...Array(100)].map(() => ({
-    name: faker.name.title(),
-    url: faker.internet.url()
+    title: faker.name.title(),
+    url: faker.internet.userName()
 }))
 
 export const video = {
