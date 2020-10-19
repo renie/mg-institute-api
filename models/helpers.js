@@ -13,3 +13,5 @@ export const removeId = (object) => {
 }
 
 export const isValidProperty = (key, value) => !isId(key) || ObjectID.isValid(value)
+
+export const propHasRef = (schema, key) => schema[key].hasOwnProperty('ref') || (Array.isArray(schema[key]) && schema[key][0].hasOwnProperty('ref'))

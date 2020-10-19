@@ -1,6 +1,7 @@
 import mongoose from 'mongoose'
 
 import config from '../../config'
+import { propHasRef } from '../helpers'
 
 
 let database = false
@@ -26,7 +27,7 @@ export async function loadSubModels (schema) {
     const propsChanged = await Promise
         .all(Object
             .keys(schema)
-            .filter((key) => schema[key].hasOwnProperty('ref') || (Array.isArray(schema[key]) && schema[key][0].hasOwnProperty('ref')))
+            .filter((key) => propHasRef(schema, key))
             .map(async (key) => {
                 await getModel(schema[key].ref || schema[key][0].ref)
                 return key
@@ -43,10 +44,10 @@ export async function loadSubModels (schema) {
 
 // eslint-disable-next-line func-style
 export async function getModel ({model, schema, collectionName}) {
+    await getConnection()
     if (database.models && database.models[model]) return database.models[model]
     const loadedSchema = await loadSubModels(schema)
-    await getConnection()
-    return database.model(model, loadedSchema, collectionName)
+    return database.models[model] || database.model(model, loadedSchema, collectionName)
 }
 
 export const MONGOOSE_ERROR_TYPE = mongoose.Error.ValidationError

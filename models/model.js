@@ -1,43 +1,6 @@
 import { getModel, MONGOOSE_ERROR_TYPE } from './db/db'
 import { ID, removeId, isValidProperty, parseValue } from './helpers'
-
-// PRIVATE
-const _execReplace = async ({object, query, id, model, entity}) => {
-    await model.validate(object)
-    const { nModified } = await model.replaceOne(query, object)
-
-    if (nModified) {
-        await model.updateOne(query, {$currentDate: {lastModified: true}})
-        logger.info(`${entity.model} replaced`, {meta: id})
-    }
-
-    return nModified
-}
-
-const _execUpdate = async ({object, query, id, model, entity}) => {
-    const { nModified } = await model.updateOne(query, {$currentDate: {lastModified: true}, $set: object})
-    if (nModified) logger.info(`${entity.model} updated`, {meta: id})
-    return nModified
-}
-
-const _execModification = async (params, operation) => (operation === 'replace' ? await _execReplace(params) : await _execUpdate(params))
-
-const _saveNewVersion = async (id, newThings, entity, operation) => {
-    const object = removeId(newThings)
-
-    if (!isValidProperty(ID, id)) return null
-
-    const query = { [ID]: parseValue(ID, id) }
-
-    try {
-        const model = await getModel(entity)
-        return await _execModification({object, query, id, model, entity}, operation)
-    } catch (err) {
-        if (err instanceof MONGOOSE_ERROR_TYPE) ThrowError(`${entity.model} not ${operation}d`, { meta: {id, object, err: err.errors} })
-        ThrowError(`${entity.model} not ${operation}d`, { meta: {id, object, err} })
-    }
-}
-// PRIVATE END
+import { _deleteRelatedEntities, _saveNewVersion } from './model.internals'
 
 export const save = async (objectToSave, entity) =>  {
     const object = removeId(objectToSave)
@@ -71,10 +34,13 @@ export const replace = async (id, newObject, entity) => await _saveNewVersion(id
 
 export const update = async (id, newValues, entity) => await _saveNewVersion(id, newValues, entity, 'update')
 
-export const remove = async (id, entity) => {
+export const remove = async (id, entity, cascade = false) => {
     if (!isValidProperty(ID, id)) return null
 
     const model = await getModel(entity)
+    if (cascade) await _deleteRelatedEntities(id, entity, model)
+
     const { deletedCount } = await model.deleteOne({[ID]: parseValue(ID, id)})
+    logger.info(`${entity.model} deleted`, { meta: id })
     return deletedCount
 }
