@@ -3,7 +3,7 @@ import { createLogger, format, transports } from 'winston'
 import config from './config'
 
 
-const { combine, timestamp, printf } = format;
+const { combine, timestamp, printf, json } = format;
 
 const myFormat = printf(({ level, message, timestamp, meta }) => {
     const metaData = meta ? JSON.stringify(meta) : ''
@@ -11,11 +11,17 @@ const myFormat = printf(({ level, message, timestamp, meta }) => {
 });
 
 const logger = createLogger({
-    format: format.json(),
+    format: combine(
+        timestamp({
+            format: 'YYYY-MM-DD HH:mm:ss'
+        }),
+        json()
+    ),
     transports: [
         new transports.File({ filename: path.join(__dirname, 'logs', 'error.log'), level: 'error' }),
         new transports.File({ filename: path.join(__dirname, 'logs', 'combined.log'), level: 'verbose' }),
-        new transports.File({ filename: path.join(__dirname, 'logs', 'combined.log'), level: 'warn' })
+        new transports.File({ filename: path.join(__dirname, 'logs', 'combined.log'), level: 'warn' }),
+        new transports.File({ filename: path.join(__dirname, 'logs', 'combined.log'), level: 'error' })
     ],
     exitOnError: false
 })
