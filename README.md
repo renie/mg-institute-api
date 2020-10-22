@@ -40,6 +40,7 @@ PARAMSDB=<database extra params for connection string>
 FRONTENDADDRESS=<address where front-end server is listening. ex:localhost:8080>
 HTTPSKEYFILE=<path to your ssl key file (will be generated on next step)>
 HTTPSCERTFILE=<path to your ssl cert file (will be generated on next step)>
+JWTDEVTOKEN=<any jwt token to bypass auth in dev env. THIS MUST NOT BE SET IN PROD>
 ```
 **After running seed, you should have a user with email `test@test.com` and password `123456`. This user can be used to test logged API accesses.**
 
@@ -225,6 +226,11 @@ npm test
 
 If you are creating a new entity, it is very likely you want to seed a new collection.
 The place for it is `models/db/seeds.js`.
+
+## Logs
+Logs are kept at `/logs`. You can check log rules at ./logger.js.
+
+**!! Logs are not rotated in dev env. Watch it !!**
 
 ## Production Environment
 If you need instructions to create a new production server, you might want to have a look [here](PRODSETUP.md).

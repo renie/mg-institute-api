@@ -20,7 +20,7 @@ const logURLMappings = (expressInstance) => expressInstance._router.stack.
     filter((r) => r.route).
     map((r) => r.route).
     map((r) => `${r.path} - ${r.stack[0].method} - ${r.stack[0].name}`).
-    forEach((r) => logger.verbose(r))
+    forEach((r) => logger.notice(r))
 
 
 const getExpressInstance = (expressLib) => {

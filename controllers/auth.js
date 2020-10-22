@@ -32,9 +32,15 @@ export const logout = async (req, res) => {
     }
 }
 
+export const isDevToken = (token) => (config.JWTDEVTOKEN !== false && token === config.JWTDEVTOKEN)
+
 export const verifyToken = async (req, res, next) => {
     const token = req.headers['x-access-token']
     if (!token) return res.status(StatusCodes.UNAUTHORIZED).send({ auth: false, message: 'No token provided.' })
+    if (isDevToken(token)) {
+        logger.alert(`DEVELOPER JUST LOGGED IN! ENV: ${config.NODEENV} IP: ${req.headers['x-forwarded-for'] || req.connection.remoteAddress}.`)
+        return next()
+    }
 
     try {
         const { id } = await jwt.verify(token, config.SECRETKEYHMAC)

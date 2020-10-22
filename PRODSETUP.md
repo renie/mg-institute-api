@@ -78,6 +78,7 @@ export HTTPSCERTFILE=<location of SSL/TLS certificate>
 export SALTROUNDS=<salt rounds for encripting>
 export SECRETKEYHMAC=<secret for HMAC encryption>
 ```
+PS.: In DEV env there is an env variables named `JWTDEVTOKEN`. It MUST NOT be set here, in PRODUCTION.
 
 ### Setup the reverse proxy
 ```
@@ -88,6 +89,17 @@ sudo ./nginx_install.sh
 #### Install it
 ```
 npm install pm2 -g
+```
+
+#### Config it
+
+Install log rotate
+```
+pm2 install pm2-logrotate
+```
+Config it
+```
+pm2 set pm2-logrotate:compress true
 ```
 
 #### Start app

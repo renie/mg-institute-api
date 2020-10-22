@@ -1,5 +1,5 @@
 import path from 'path'
-import { createLogger, format, transports } from 'winston'
+import { createLogger, format, transports, config as winstonConfig } from 'winston'
 import config from './config'
 
 
@@ -11,6 +11,7 @@ const myFormat = printf(({ level, message, timestamp, meta }) => {
 });
 
 const logger = createLogger({
+    levels: winstonConfig.syslog.levels,
     format: combine(
         timestamp({
             format: 'YYYY-MM-DD HH:mm:ss'
@@ -18,8 +19,9 @@ const logger = createLogger({
         json()
     ),
     transports: [
+        new transports.File({ filename: path.join(__dirname, 'logs', 'alert.log'), level: 'alert' }),
         new transports.File({ filename: path.join(__dirname, 'logs', 'error.log'), level: 'error' }),
-        new transports.File({ filename: path.join(__dirname, 'logs', 'combined.log'), level: 'verbose' }),
+        new transports.File({ filename: path.join(__dirname, 'logs', 'combined.log'), level: 'notice' }),
         new transports.File({ filename: path.join(__dirname, 'logs', 'combined.log'), level: 'warn' }),
         new transports.File({ filename: path.join(__dirname, 'logs', 'combined.log'), level: 'error' })
     ],

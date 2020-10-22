@@ -19,7 +19,8 @@ const config = {
     HTTPSKEYFILE: process.env.HTTPSKEYFILE,
     HTTPSCERTFILE: process.env.HTTPSCERTFILE,
     SALTROUNDS: process.env.SALTROUNDS,
-    SECRETKEYHMAC: process.env.SECRETKEYHMAC
+    SECRETKEYHMAC: process.env.SECRETKEYHMAC,
+    JWTDEVTOKEN: process.env.JWTDEVTOKEN || false
 }
 
 const getHTTPOptions = () => ({
