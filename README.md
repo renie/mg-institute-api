@@ -143,6 +143,11 @@ server {
     server_tokens off;
     charset utf-8;
 
+    gzip on;
+    gzip_min_length 0;
+    gzip_proxied any;
+    gzip_types text/html text/plain text/css text/javascript application/javascript application/x-javascript application/json;
+
     location / {
             proxy_pass https://<host address>:<host port>;
             proxy_http_version 1.1;
