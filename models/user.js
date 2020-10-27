@@ -19,7 +19,8 @@ export const USER = {
         email: { type: String, required: true },
         password: { type: String, required: true, unique: true },
         lastUpdate: { type: Date, default: Date.now },
-        logged: {type: Boolean, default: false}
+        logged: {type: Boolean, default: false},
+        loggedInfo: {type: String, default: null}
     }
 }
 
@@ -32,7 +33,11 @@ export const hashPass = async (user) => {
     return userCopy
 }
 
-export const genToken = (user) => jwt.sign({ id: user._id, email: user.email }, config.SECRETKEYHMAC, { expiresIn: 86400 })
+export const genToken = (user, data) => jwt.sign({
+    id: user._id,
+    email: user.email,
+    ...data
+}, config.SECRETKEYHMAC, { expiresIn: 86400 })
 
 export const checkPass = async (user) => {
     const userDoc = await genericGetOne('email', user.email, USER)
