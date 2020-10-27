@@ -26,7 +26,7 @@ export const login = async (req, res) => {
 
         const token = User.genToken(user, data)
         res.cookie('token', token, { httpOnly: true })
-        res.status(StatusCodes.OK).send({ auth: true, token})
+        res.status(StatusCodes.OK).send({ auth: true })
     } catch {
         res.status(StatusCodes.UNAUTHORIZED).send()
     }
