@@ -13,8 +13,10 @@ export const login = async (req, res) => {
         }
 
         await User.update(user._id, { logged: true })
-        res.status(StatusCodes.OK).send({ auth: true, token: User.genToken(user) })
-    } catch {
+        const token = User.genToken(user)
+        res.cookie('token', token, { httpOnly: true })
+        res.status(StatusCodes.OK).send({ auth: true, token})
+    } catch(e) {
         res.status(StatusCodes.UNAUTHORIZED).send()
     }
 }
