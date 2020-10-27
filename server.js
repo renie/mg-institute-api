@@ -3,6 +3,7 @@ import express from 'express'
 import bodyParser from 'body-parser'
 import helmet from 'helmet'
 import cors from 'cors'
+import cookieParser from 'cookie-parser'
 
 import { setAllRoutes } from './routes/main'
 import logger from './logger'
@@ -32,6 +33,7 @@ const getExpressInstance = (expressLib) => {
 
     instance.use(bodyParser.json())
     instance.use(helmet())
+    instance.use(cookieParser())
     instance.use(cors(corsOptions))
     return instance
 }

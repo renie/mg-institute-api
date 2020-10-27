@@ -16,13 +16,13 @@ export const login = async (req, res) => {
         const token = User.genToken(user)
         res.cookie('token', token, { httpOnly: true })
         res.status(StatusCodes.OK).send({ auth: true, token})
-    } catch(e) {
+    } catch {
         res.status(StatusCodes.UNAUTHORIZED).send()
     }
 }
 
 export const logout = async (req, res) => {
-    const token = req.headers['x-access-token']
+    const token = req.headers['x-access-token'] || req.cookies.token
     if (!token) return res.status(StatusCodes.UNAUTHORIZED).send({ auth: false, message: 'No token provided.' })
 
     try {
@@ -37,7 +37,7 @@ export const logout = async (req, res) => {
 export const isDevToken = (token) => (config.JWTDEVTOKEN !== false && token === config.JWTDEVTOKEN)
 
 export const verifyToken = async (req, res, next) => {
-    const token = req.headers['x-access-token']
+    const token = req.headers['x-access-token'] || req.cookies.token
     if (!token) return res.status(StatusCodes.UNAUTHORIZED).send({ auth: false, message: 'No token provided.' })
     if (isDevToken(token)) {
         logger.alert(`DEVELOPER JUST LOGGED IN! ENV: ${config.NODEENV} IP: ${req.headers['x-forwarded-for'] || req.connection.remoteAddress}.`)
