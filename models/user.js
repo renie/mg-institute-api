@@ -20,7 +20,8 @@ export const USER = {
         password: { type: String, required: true, unique: true },
         lastUpdate: { type: Date, default: Date.now },
         logged: {type: Boolean, default: false},
-        loggedInfo: {type: String, default: null}
+        loggedInfo: {type: String, default: null},
+        isAdmin: {type: Boolean, default: false}
     }
 }
 

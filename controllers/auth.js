@@ -57,8 +57,8 @@ export const checkTokenValidity = (dbuser, tokenInfo, req) => {
     const userAgent = (new sniffer()).sniff(req.headers['user-agent'])
     userAgent.ip = req.ip
     return (
-        !dbuser.logged ||
-        !checkLoggedInfo(JSON.parse(dbuser.loggedInfo), tokenInfo, userAgent)
+        dbuser.logged ||
+        checkLoggedInfo(JSON.parse(dbuser.loggedInfo), tokenInfo, userAgent)
     )
 }
 
@@ -73,10 +73,25 @@ export const verifyToken = async (req, res, next) => {
     try {
         const { id, os, browser, ip } = await jwt.verify(token, config.SECRETKEYHMAC)
         const user = await User.getOne('_id', id)
-        if (checkTokenValidity(user, { os, browser, ip}, req)) return res.status(StatusCodes.UNAUTHORIZED).send({ auth: false, message: 'Failed to authenticate token.' })
+        const tokenValid = checkTokenValidity(user, { os, browser, ip}, req)
+        if (!tokenValid) return res.status(StatusCodes.UNAUTHORIZED).send({ auth: false, message: 'Failed to authenticate token.' })
 
         return next()
     } catch {
         res.status(StatusCodes.UNAUTHORIZED).send({ auth: false, message: 'Failed to authenticate token.' })
+    }
+}
+
+export const amIAdmin = async (req, res) => {
+    const token = req.headers['x-access-token'] || req.cookies.token
+    if (!token) return res.status(StatusCodes.UNAUTHORIZED).send({ yesYouAre: false })
+
+    try {
+        const { id } = await jwt.verify(token, config.SECRETKEYHMAC)
+        const { isAdmin } = await User.getOne('_id', id)
+        if (!isAdmin) return res.status(StatusCodes.UNAUTHORIZED).send({ yesYouAre: false })
+        res.status(StatusCodes.OK).send({ yesYouAre: true })
+    } catch {
+        res.status(StatusCodes.UNAUTHORIZED).send({ yesYouAre: false })
     }
 }
