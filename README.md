@@ -3,6 +3,7 @@
 [![Maintainability](https://api.codeclimate.com/v1/badges/7dc85865d39cb4d344db/maintainability)](https://codeclimate.com/github/renie/mg-institute-api/maintainability)
 [![dependencies Status](https://david-dm.org/renie/mg-institute-api/status.svg)](https://david-dm.org/renie/mg-institute-api)
 [![devDependencies Status](https://david-dm.org/renie/mg-institute-api/dev-status.svg)](https://david-dm.org/renie/mg-institute-api?type=dev)
+[![Known Vulnerabilities](https://snyk.io/test/github/renie/mg-institute-api/badge.svg?targetFile=package.json)](https://snyk.io/test/github/renie/mg-institute-api?targetFile=package.json)
 
 ## Dependencies
 
