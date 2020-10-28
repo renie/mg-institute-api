@@ -1,6 +1,8 @@
 # MG Institute API
 [![Build Status](https://travis-ci.com/renie/mg-institute-api.svg?branch=master)](https://travis-ci.com/renie/mg-institute-api)
 [![Maintainability](https://api.codeclimate.com/v1/badges/7dc85865d39cb4d344db/maintainability)](https://codeclimate.com/github/renie/mg-institute-api/maintainability)
+[![dependencies Status](https://david-dm.org/renie/mg-institute-api/status.svg)](https://david-dm.org/renie/mg-institute-api)
+[![devDependencies Status](https://david-dm.org/renie/mg-institute-api/dev-status.svg)](https://david-dm.org/renie/mg-institute-api?type=dev)
 
 ## Dependencies
 
