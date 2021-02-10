@@ -55,7 +55,7 @@ server {
 
       location / {
           root $FRONTEND;
-          try_files $uri.html $uri $uri/index.html $uri/ =404;
+          try_files \$uri.html \$uri \$uri/index.html \$uri/ =404;
       }
 }
 EOF
