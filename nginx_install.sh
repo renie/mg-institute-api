@@ -33,15 +33,15 @@ server {
       gzip on;
       gzip_min_length 0;
       gzip_proxied any;
-      gzip_types text/html text/plain text/css text/javascript application/javascript application/x-javascript application/json;
+      gzip_types text/plain text/css text/javascript application/javascript application/x-javascript application/json;
 
       location /api/ {
           proxy_pass https://localhost:$PORT;
           proxy_http_version 1.1;
-          proxy_set_header Upgrade $http_upgrade;
+          proxy_set_header Upgrade \$http_upgrade;
           proxy_set_header Connection 'upgrade';
-          proxy_set_header Host $host;
-          proxy_cache_bypass $http_upgrade;
+          proxy_set_header Host \$host;
+          proxy_cache_bypass \$http_upgrade;
       }
 
       location ~* ^.+\.(html|css|js|pdf|jpg|jpeg|png|svg) {
