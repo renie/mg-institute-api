@@ -33,7 +33,7 @@ server {
       gzip on;
       gzip_min_length 0;
       gzip_proxied any;
-      gzip_types text/plain text/css text/javascript application/javascript application/x-javascript application/json;
+      gzip_types text/plain text/css text/javascript application/javascript application/x-javascript application/json  image/svg+xml image/gif, image/png, image/jpeg image/webp;
 
       location /api/ {
           proxy_pass https://localhost:$PORT;
