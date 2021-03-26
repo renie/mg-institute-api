@@ -1,7 +1,8 @@
 import {
     login,
     logout,
-    amIAdmin } from '../controllers/auth'
+    amIAdmin,
+    verifyToken } from '../controllers/auth'
 
 
 export const authRoutes = [
@@ -19,5 +20,10 @@ export const authRoutes = [
         method: 'get',
         url: '/api/amIAdmin',
         fn: amIAdmin
+    },
+    {
+        method: 'post',
+        url: '/api/verifyToken',
+        fn: verifyToken
     }
 ]

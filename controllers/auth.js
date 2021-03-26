@@ -7,9 +7,13 @@ import User from "../models/user"
 
 export const login = async (req, res) => {
     try {
+        const { wipeOldSessions } = req.body
         const user = await User.checkPass(req.body)
+
+        if (wipeOldSessions) user.logged = false
+
         if (user.logged) {
-            res.status(StatusCodes.UNAUTHORIZED).send({data: "User already logged"})
+            res.status(StatusCodes.UNAUTHORIZED).send({ type: "LOGGED_USER", message: "User already logged" })
             return false
         }
 
@@ -39,6 +43,7 @@ export const logout = async (req, res) => {
     try {
         const {id} = await jwt.decode(token, config.SECRETKEYHMAC)
         await User.update(id, { logged: false, loggedInfo: null })
+        res.clearCookie('token')
         res.status(StatusCodes.OK).send({ auth: false, token: null })
     } catch (e) {
         res.status(StatusCodes.BAD_REQUEST).send({ auth: false, token })
@@ -62,12 +67,19 @@ export const checkTokenValidity = (dbuser, tokenInfo, req) => {
     )
 }
 
+const _goodTokenRedirect = (url, res, next) => (
+    url.includes('verifyToken')
+        ? res.status(StatusCodes.OK).send()
+        : next()
+)
+
 export const verifyToken = async (req, res, next) => {
     const token = req.headers['x-access-token'] || req.cookies.token
+
     if (!token) return res.status(StatusCodes.UNAUTHORIZED).send({ auth: false, message: 'No token provided.' })
     if (isDevToken(token)) {
         logger.alert(`DEVELOPER JUST LOGGED IN! ENV: ${config.NODEENV} IP: ${req.headers['x-forwarded-for'] || req.connection.remoteAddress}.`)
-        return next()
+        return _goodTokenRedirect(req.originalUrl, res, next)
     }
 
     try {
@@ -76,7 +88,7 @@ export const verifyToken = async (req, res, next) => {
         const tokenValid = checkTokenValidity(user, { os, browser, ip}, req)
         if (!tokenValid) return res.status(StatusCodes.UNAUTHORIZED).send({ auth: false, message: 'Failed to authenticate token.' })
 
-        return next()
+        return _goodTokenRedirect(req.originalUrl, res, next)
     } catch {
         res.status(StatusCodes.UNAUTHORIZED).send({ auth: false, message: 'Failed to authenticate token.' })
     }
