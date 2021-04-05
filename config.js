@@ -20,7 +20,10 @@ const config = {
     HTTPSCERTFILE: process.env.HTTPSCERTFILE,
     SALTROUNDS: process.env.SALTROUNDS,
     SECRETKEYHMAC: process.env.SECRETKEYHMAC,
-    JWTDEVTOKEN: process.env.JWTDEVTOKEN || false
+    JWTDEVTOKEN: process.env.JWTDEVTOKEN || false,
+    VIMEO_CLIENTID: process.env.VIMEO_CLIENTID,
+    VIMEO_CLIENTSECRET: process.env.VIMEO_CLIENTSECRET,
+    VIMEO_ACCESSTOKEN: process.env.VIMEO_ACCESSTOKEN
 }
 
 const getHTTPOptions = () => ({

@@ -77,6 +77,9 @@ export HTTPSKEYFILE=<location of SSL/TLS key>
 export HTTPSCERTFILE=<location of SSL/TLS certificate>
 export SALTROUNDS=<salt rounds for encripting>
 export SECRETKEYHMAC=<secret for HMAC encryption>
+export VIMEO_CLIENTID=<Vimeo clientid>
+export VIMEO_CLIENTSECRET=<Vimeo client secret>
+export VIMEO_ACCESSTOKEN=<Vimeo access token>
 ```
 PS.: In DEV env there is an env variables named `JWTDEVTOKEN`. It MUST NOT be set here, in PRODUCTION.
 

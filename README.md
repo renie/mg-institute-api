@@ -46,6 +46,9 @@ HTTPSCERTFILE=<path to your ssl cert file (will be generated on next step)>
 JWTDEVTOKEN=<any jwt token to bypass auth in dev env. THIS MUST NOT BE SET IN PROD>
 SECRETKEYHMAC=<any random string to be used as secret for HMAC on JWT>
 SALTROUNDS=<number of rounds to bcrypt>
+VIMEO_CLIENTID=<Vimeo clientid>
+VIMEO_CLIENTSECRET=<Vimeo client secret>
+VIMEO_ACCESSTOKEN=<Vimeo access token>
 ```
 **After running seed, you should have a user with email `test@test.com` and password `123456`. This user can be used to test logged API accesses.**
 

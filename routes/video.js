@@ -4,7 +4,8 @@ import {
     findById,
     fullUpdate,
     partialUpdate,
-    remove } from '../controllers/video'
+    remove,
+    getVideoThumbURL } from '../controllers/video'
 
 export const videoRoutes = [
     {
@@ -41,6 +42,12 @@ export const videoRoutes = [
         method: 'delete',
         url: '/api/video/:id',
         fn: remove,
+        auth: true
+    },
+    {
+        method: 'get',
+        url: '/api/video/vimeothumbof/:id',
+        fn: getVideoThumbURL,
         auth: true
     }
 ]
