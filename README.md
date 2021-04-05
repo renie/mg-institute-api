@@ -44,6 +44,8 @@ FRONTENDADDRESS=<address where front-end server is listening. ex:localhost:8080>
 HTTPSKEYFILE=<path to your ssl key file (will be generated on next step)>
 HTTPSCERTFILE=<path to your ssl cert file (will be generated on next step)>
 JWTDEVTOKEN=<any jwt token to bypass auth in dev env. THIS MUST NOT BE SET IN PROD>
+SECRETKEYHMAC=<any random string to be used as secret for HMAC on JWT>
+SALTROUNDS=<number of rounds to bcrypt>
 ```
 **After running seed, you should have a user with email `test@test.com` and password `123456`. This user can be used to test logged API accesses.**
 
@@ -63,7 +65,7 @@ npm run dev-test
 
 ### SSL/TSL config (dev/staging)
 This config is important to have an HTTPS environment for devs.
- 
+
 #### Become a Certificate Authority
 
 Generate private key

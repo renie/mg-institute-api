@@ -12,6 +12,7 @@ export const connect = async () => {
     try {
         database = await mongoose.connect(URI, { useNewUrlParser: true, useUnifiedTopology: true })
     } catch (err) {
+        logger.error(err)
         ThrowError('DB Connection Error', { meta: err })
     }
 }
