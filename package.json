@@ -26,7 +26,7 @@
     "helmet": "^4.1.1",
     "http-status-codes": "^2.1.4",
     "jsonwebtoken": "^8.5.1",
-    "mongodb": "^3.6.2",
+    "mongodb": "^3.6.10",
     "sniffr": "^1.2.0",
     "vimeo": "^2.1.1",
     "winston": "^3.3.3"
